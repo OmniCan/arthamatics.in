@@ -7,6 +7,7 @@ A secure finance company platform for stock and mutual fund distribution, built 
 - **Customer Onboarding**: Secure registration with KYC compliance
 - **Authentication**: JWT-based authentication with role-based access
 - **Admin Panel**: Manage customers and view reports
+- **Trading Integration**: Full Kite Connect API integration for live trading
 - **Database**: MySQL with Prisma ORM
 - **Security**: Password hashing, protected routes
 
@@ -16,6 +17,7 @@ A secure finance company platform for stock and mutual fund distribution, built 
 - **Backend**: Next.js API Routes
 - **Database**: MySQL (hosted on alwaysdata.net)
 - **Authentication**: NextAuth.js
+- **Trading API**: Kite Connect (Zerodha)
 - **ORM**: Prisma
 - **Deployment**: Vercel
 
@@ -32,6 +34,10 @@ A secure finance company platform for stock and mutual fund distribution, built 
    DATABASE_URL="mysql://username:password@host:port/database"
    NEXTAUTH_SECRET="your-secret-key"
    NEXTAUTH_URL="http://localhost:3000"
+
+   # Kite Trading API (get from Kite Developer Console)
+   KITE_API_KEY="your-kite-api-key"
+   KITE_API_SECRET="your-kite-api-secret"
    ```
 
 4. Run database migrations:
@@ -51,6 +57,21 @@ A secure finance company platform for stock and mutual fund distribution, built 
 
 7. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Kite API Setup
+
+1. **Create Kite Developer Account**:
+   - Go to [Kite Developer Console](https://developers.kite.trade/)
+   - Create a new app
+   - Set redirect URL to: `http://localhost:3000/kite/callback` (for local) or your production URL
+
+2. **Get API Credentials**:
+   - Copy API Key and API Secret
+   - Add them to your `.env` file
+
+3. **Trading Permissions**:
+   - Request trading permissions from Kite
+   - Enable required segments (equity, derivatives, etc.)
+
 ## Deployment
 
 ### Vercel
@@ -60,7 +81,10 @@ A secure finance company platform for stock and mutual fund distribution, built 
    - `DATABASE_URL`
    - `NEXTAUTH_SECRET`
    - `NEXTAUTH_URL` (set to your production URL)
-3. Deploy
+   - `KITE_API_KEY`
+   - `KITE_API_SECRET`
+3. Update Kite app redirect URL to your Vercel domain
+4. Deploy
 
 ## Database Schema
 

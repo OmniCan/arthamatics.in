@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -50,11 +51,18 @@ export default function Dashboard() {
             <div>
               <h3 className="text-lg font-semibold mb-2">Admin Panel</h3>
               <p>Manage customers, view reports, etc.</p>
+              <div className="mt-4 space-x-4">
+                <Link href="/admin" className="text-indigo-600 hover:text-indigo-800">Go to Admin Panel</Link>
+              </div>
             </div>
           ) : (
             <div>
               <h3 className="text-lg font-semibold mb-2">Customer Portal</h3>
               <p>View recommendations, manage investments, etc.</p>
+              <div className="mt-4 space-x-4">
+                <Link href="/trading" className="text-indigo-600 hover:text-indigo-800">Start Trading</Link>
+                <Link href="/onboarding" className="text-indigo-600 hover:text-indigo-800">Complete Profile</Link>
+              </div>
             </div>
           )}
         </div>

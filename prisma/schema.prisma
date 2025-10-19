@@ -14,12 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      String   @default("customer") // admin or customer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  role        String   @default("customer") // admin or customer
+  kiteToken   String?  // Kite trading access token
+  kiteTokenExpiry DateTime? // Token expiry
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   customer Customer?
 }
