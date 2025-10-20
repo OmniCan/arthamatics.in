@@ -23,23 +23,32 @@ interface Order {
 }
 
 export default function Trading() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [holdings, setHoldings] = useState<Holding[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [kiteConnected, setKiteConnected] = useState(false)
 
-  const checkKiteConnection = async () => {
+  const checkKiteConnection = useCallback(async () => {
+    if (status !== 'authenticated') {
+      setKiteConnected(false)
+      setLoading(false)
+      return
+    }
+
     try {
-      // Check if user has Kite token
       const response = await fetch('/api/kite/holdings')
       if (response.ok) {
         setKiteConnected(true)
+      } else {
+        setKiteConnected(false)
       }
     } catch {
       setKiteConnected(false)
+    } finally {
+      setLoading(false)
     }
-  }
+  }, [status])
 
   const loadData = useCallback(async () => {
     if (!kiteConnected) return
@@ -61,14 +70,12 @@ export default function Trading() {
       }
     } catch {
       console.error('Error loading trading data')
-    } finally {
-      setLoading(false)
     }
   }, [kiteConnected])
 
   useEffect(() => {
     checkKiteConnection()
-  }, [])
+  }, [checkKiteConnection])
 
   useEffect(() => {
     if (kiteConnected) {
@@ -86,6 +93,29 @@ export default function Trading() {
     } catch (error) {
       console.error('Error getting Kite login URL:', error)
     }
+  }
+
+  if (status === 'loading') {
+    return <div className="flex justify-center items-center h-64">Loading...</div>
+  }
+
+  if (status === 'unauthenticated') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Authentication Required</h2>
+            <p className="text-gray-600 mb-6">Please sign in to access the trading dashboard.</p>
+            <a
+              href="/auth/signin"
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 inline-block text-center"
+            >
+              Sign In
+            </a>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (loading) {
