@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import MarketWatchlist from '@/components/MarketWatchlist'
 
 export default function Home() {
   return (
@@ -26,6 +27,11 @@ export default function Home() {
               Sign In
             </Link>
           </div>
+        </div>
+
+        {/* Market Data Section */}
+        <div className="mt-16 max-w-6xl mx-auto">
+          <MarketWatchlist />
         </div>
       </div>
     </div>
